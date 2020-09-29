@@ -70,7 +70,10 @@ def profile(request, username):
 
     # Check if current user is already following the requested user
     try:
-        following = is_following(user, request) 
+        if Follower.objects.filter(user=user, follower=request.user).exists():
+            following = True
+        else:
+            following = False
     except:
 
         # No user is logged-in
@@ -90,8 +93,10 @@ def profile(request, username):
 @login_required
 def is_following(user, request):
     # Check if requested user is following a specified user
-    return Follower.objects.filter(
-        user=user, follower=request.user).exists()
+    if Follower.objects.filter(user=user, follower=request.user).exists():
+        return True
+    else:
+        return False
 
 
 @csrf_exempt
