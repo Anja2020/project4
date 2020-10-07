@@ -7,9 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 
-
 import json
-
 
 from .models import User, Post, Follower
 
@@ -87,16 +85,6 @@ def profile(request, username):
         "posts": posts,
         "following": following
     })
-
-
-@csrf_exempt
-@login_required
-def is_following(user, request):
-    # Check if requested user is following a specified user
-    if Follower.objects.filter(user=user, follower=request.user).exists():
-        return True
-    else:
-        return False
 
 
 @csrf_exempt

@@ -16,7 +16,6 @@ function create_post() {
                 document.querySelector("#error").innerHTML = result.error;
             } else {
                 document.querySelector("#error").style.display = "none";
-                //load_all_posts();
             }
             // Clear out text field of post form
             document.querySelector("#post-text").value = "";
@@ -26,18 +25,21 @@ function create_post() {
 
 function update_post(event) {
 
-    event.preventDefault();
+    // event.preventDefault();
 
     post = event.target.dataset.post;
     const editButtons = document.querySelectorAll("#edit");
 
+    // Disable all edit buttons
     editButtons.forEach(button => {
         button.disabled = true;
     });
 
+    // Get the latest content of the post
     const postContent = document.getElementById(post);
     const textBefore = postContent.innerHTML;
 
+    // Create form to edit a post
     const form = document.createElement("form");
     const alert = `<div id="error-edit" class="alert alert-danger collapse" role="alert"></div>`;
     const textarea = `<textarea id="update-text" class="form-control" >`+ textBefore +`</textarea>`;
@@ -45,9 +47,11 @@ function update_post(event) {
 
     form.innerHTML = alert + textarea + saveButton;
 
+    // Display form to update the post
     postContent.innerHTML = ""; 
     postContent.appendChild(form);
 
+    // When Form is submitted
     form.onsubmit = () => {
         put_post(post, form, postContent, editButtons);
         return false;
@@ -58,7 +62,6 @@ function update_post(event) {
 function put_post(post, form, postContent, editButtons) {
     // Get required data for POST request
     const text = document.querySelector("#update-text").value;
-    console.log("test");
 
     // Send PUT request to create post
     fetch(`/posts/${post}`, {
@@ -141,7 +144,7 @@ function follow_user(event) {
                 unfollowButton.hidden = false;
 
                 // Update number of followers
-                follower.innerHTML = `Number of Follower: ${result.length}`;
+                followers.innerHTML = `Number of Follower: ${result.length}`;
             }
         });
 }
